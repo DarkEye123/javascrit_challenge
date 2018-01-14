@@ -12,6 +12,7 @@
         <div class="hand hour-hand"></div>
         <div class="hand min-hand"></div>
         <div class="hand second-hand"></div>
+        <div class="dot"></div>
     </div>
 </div>
 
@@ -32,6 +33,20 @@
         flex: 1;
         min-height: 100vh;
         align-items: center;
+    }
+    
+    .dot {
+        width: 1rem;
+        height: 1rem;
+        border: 5px solid white;
+        border-radius: 50%;
+        margin: auto auto;
+        top: 48%;
+        position: relative;
+        box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 3px black,
+        inset 0 0 10px #EFEFEF,
+        0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .clock {
@@ -73,23 +88,28 @@
     const hourHand = document.querySelector('.hour-hand');
     const minuteHand = document.querySelector('.min-hand');
     const secondHand = document.querySelector('.second-hand');
+    var hoursDegreesCounter = 0;
+    var minutesDegreesCounter = 0;
+    var secondsDegreesCounter = 0;
     function setDate() {
         const now = new Date();
-
         const hours = now.getHours() % 12;
-        const hoursDegrees = ((hours / 12) * 360) + 90; // last 90 is for offset the default (otherwise seconds and hand position would not match)
+        hoursDegreesCounter = hours === 0 ? hoursDegreesCounter + 360 : hoursDegreesCounter;
+        const hoursDegrees = (((hours / 12) * 360) + 90) + hoursDegreesCounter; // last 90 is for offset the default (otherwise seconds and hand position would not match)
         hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
         // console.log(hours);
         // console.log(hoursDegrees);
 
         const minutes = now.getMinutes(); // seconds of current minute
-        const minutesDegrees = ((minutes / 60) * 360) + 90; // last 90 is for offset the default (otherwise seconds and hand position would not match)
+        minutesDegreesCounter = minutes === 0 ? minutesDegreesCounter + 360 : minutesDegreesCounter;
+        const minutesDegrees = (((minutes / 60) * 360) + 90) + minutesDegreesCounter; // last 90 is for offset the default (otherwise seconds and hand position would not match)
         minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
         // console.log(minutes);
         // console.log(minutesDegrees);
 
         const seconds = now.getSeconds(); // seconds of current minute
-        const secondsDegrees = ((seconds / 60) * 360) + 90; // last 90 is for offset the default (otherwise seconds and hand position would not match)
+        secondsDegreesCounter = seconds === 0 ? secondsDegreesCounter + 360 : secondsDegreesCounter;
+        const secondsDegrees = (((seconds / 60) * 360) + 90) + secondsDegreesCounter; // last 90 is for offset the default (otherwise seconds and hand position would not match)
         secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
     }
 
